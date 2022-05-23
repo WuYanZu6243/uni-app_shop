@@ -1,22 +1,30 @@
 {
-	"pages": [
+	"pages": [{
+    "path" : "pages/home/home",
+    "style" : {}
+  },{
+    "path" : "pages/cate/cate",
+    "style" : {}
+  },{
+    "path" : "pages/cart/cart",
+    "style" : {}
+  },{
+    "path" : "pages/my/my",
+    "style" : {}
+  }],
+  "subPackages":[
     {
-        "path" : "pages/home/home",
+      "root":"subpkg",
+      "pages":[{
+        "path" : "goods_detail/goods_detail",
         "style" : {}
+      }    ,{
+                    "path" : "goods_list/goods_list",
+                    "style" : {}
+                }
+            ]
     }
-    ,{
-        "path" : "pages/cate/cate",
-        "style" : {}
-    }
-    ,{
-        "path" : "pages/cart/cart",
-        "style" : {}
-    }
-    ,{
-        "path" : "pages/my/my",
-        "style" : {}
-    }
-    ],
+  ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "肇优购",
