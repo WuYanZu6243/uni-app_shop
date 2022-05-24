@@ -1,5 +1,7 @@
 <template>
 	<view class="cate-content">
+    <!-- 搜索框 -->
+    <my-search @click='skipSearch'></my-search>
 		<!-- 滚动列表 -->
     <view class="scroll">
       <!-- 左边滚动列表 -->
@@ -62,7 +64,8 @@
       // 获取当前屏幕的高度
       getVh(){
         const sysInfo = uni.getSystemInfoSync()
-        this.wh = sysInfo.windowHeight
+        // 减去45是因为：要考虑搜索框的高度
+        this.wh = sysInfo.windowHeight - 45 
       },
       // 获取分类数据列表
       async getCateList(){
@@ -87,6 +90,12 @@
       skipDoodsList(item2){
         uni.redirectTo({
           url:'/subpkg/goods_list/goods_list?cid='+ item2.cat_id 
+        })
+      },
+      // 点击顶部搜索框，跳转到搜索页面
+      skipSearch(){
+        uni.redirectTo({
+          url:'/subpkg/search/search'
         })
       }
     }

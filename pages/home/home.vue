@@ -1,5 +1,9 @@
 <template>
 	<view class="home-content">
+    <!-- 搜索框 -->
+    <view class="my-search-box">
+      <my-search class='my-search' @click='skipSearch'></my-search>
+    </view>
     <!-- 轮播图 -->
 		<swiper :indicator-dots='true' :autoplay='true' :interval="3000" :circular='true' 
     indicator-active-color='#334'>
@@ -109,6 +113,12 @@
           })
         })
         this.floorList = res.message
+      },
+      // 点击顶部搜索框，跳转到搜索页面
+      skipSearch(){
+        uni.redirectTo({
+          url:'/subpkg/search/search'
+        })
       }
     }
 	}
@@ -152,5 +162,10 @@
       flex-wrap:wrap;
     }
   }
-  
+  // 搜索框
+  .my-search-box{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
 </style>
