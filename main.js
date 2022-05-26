@@ -27,6 +27,11 @@ uni.$showMsg = function(title='数据请求失败!',duration=1500){
   })
 }
 
+// 设置全局过滤器
+Vue.filter('tofixed',function(num){
+  return Number(num).toFixed(2)
+})
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

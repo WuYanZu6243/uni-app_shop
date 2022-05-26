@@ -15,13 +15,6 @@
 
 <script>
 	export default {
-    // 过滤器
-    filters: {
-      // 把数字处理为带两位小数点的数字
-      tofixed(num) {
-        return Number(num).toFixed(2)
-      }
-    },
     // 父组件的传参
     props:{
       // 商品对象信息

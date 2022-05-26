@@ -7,6 +7,8 @@
         <my-goods :goods="item" @click='skipDetail(item)'></my-goods>
       </block>
     </view>
+    <!-- 提示当前已加载全部数据 -->
+    <view class="isAllDataHint" v-show="isAllData">没有更多数据了...</view>
 	</view>
 </template>
 
@@ -20,14 +22,18 @@
           query:'',
           cid:'',
           pagenum:1,
-          pagesize:15
+          pagesize:10
         },
         // 商品列表数据
         goodsList:[],
         // 商品列表商品总数
-        total:[],
+        total:0,
         // 节流阀,是否正在发送请求
-        isLoading : false
+        isLoading : false,
+        // 当前是否为最后一页
+        isLastPage : false,
+        // 当前已加载全部数据
+        isAllData : false
 			};
 		},
     // 生命周期钩子
@@ -41,8 +47,8 @@
     // 上拉触底事件
     onReachBottom(){
       // 加载下一页数据
-      // 判断是否还有下一页数据
-      if (this.queryInfo.pagenum * this.queryInfo.pagesize >= this.total) return uni.$showMsg('数据加载完毕！')
+      // 判断是否请求完所有数据
+      if (this.isAllData) return;
       // 判断当前能不能发送请求
       if(this.isLoading) return
       // 页码+1
@@ -54,9 +60,12 @@
     onPullDownRefresh(){
       // 重置参数
       this.queryInfo.pagenum = 1
+      this.queryInfo.pagesize = 10
       this.goodsList = []
       this.total = 0
-      this.isLoading = false
+      this.isLoading = false,
+      this.isLastPage = false,
+      this.isAllData = false
       // 重新发送数据请求
       this.getGoodsList(()=>uni.stopPullDownRefresh())
     },
@@ -66,6 +75,11 @@
       async getGoodsList(cb){
         // 设置请求阀状态，表示当前正在发送请求
         this.isLoading = true
+        // 计算当前是否为最后一页：如果为最后一页，设置isLastPage为true、更改请求参数queryInfo.pagenum
+        if(this.queryInfo.pagenum === Math.ceil(this.total / this.queryInfo.pagesize)){
+          this.isLastPage = true
+          this.queryInfo.pagesize = this.total - (this.queryInfo.pagenum-1) * this.queryInfo.pagesize
+        }
         // 发送请求
         const {data:res} = await uni.$http.get('/api/public/v1/goods/search',this.queryInfo)
         // 请求失败
@@ -73,11 +87,14 @@
         // 请求成功
         this.goodsList = [...this.goodsList,...res.message.goods]
         this.total = res.message.total
+        // 判断是否加载完所有数据
+        if(this.isLastPage) this.isAllData = true
         // 设置请求阀状态，表示当前不在发送请求
         this.isLoading = false
         // cb是作用为让下拉框关闭的的函数
         cb && cb()
       },
+      // 数据页数相关操作
       // 跳转到详情页面
       skipDetail(item){
         uni.navigateTo({
@@ -91,5 +108,11 @@
 <style lang="scss">
   .goods-list{
     padding: 5px;
+  }
+  .isAllDataHint{
+    font-size: 14px;
+    color: #c3c3c3;
+    text-align: center;
+    margin-bottom: 10px;
   }
 </style>
