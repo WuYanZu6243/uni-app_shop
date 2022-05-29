@@ -3,9 +3,9 @@
     <!-- 商品列表 -->
     <view class="goods-list">
       <!-- 循环生成多个商品组件 -->
-      <block v-for="item in goodsList" :key="item.goods_id">
+      <view class="my-goods-margin" v-for="item in goodsList" :key="item.goods_id">
         <my-goods :goods="item" @click='skipDetail(item)'></my-goods>
-      </block>
+      </view>
     </view>
     <!-- 提示当前已加载全部数据 -->
     <view class="isAllDataHint" v-show="isAllData">没有更多数据了...</view>
@@ -114,5 +114,8 @@
     color: #c3c3c3;
     text-align: center;
     margin-bottom: 10px;
+  }
+  .my-goods-margin{
+    margin: 5px 0;
   }
 </style>

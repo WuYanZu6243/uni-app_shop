@@ -56,9 +56,13 @@
 				this.inputValue = +val;
 			},
 			inputValue(newVal, oldVal) {
-				if (+newVal !== +oldVal) {
-					this.$emit("change", newVal);
-				}
+				// 官方提供的 if 判断条件，在用户每次输入内容时，都会调用 this.$emit("change", newVal)
+        // if (+newVal !== +oldVal) {
+      
+        // 新旧内容不同 && 新值内容合法 && 新值中不包含小数点
+        if (+newVal !== +oldVal && Number(newVal) && String(newVal).indexOf('.') === -1) {
+          this.$emit("change", newVal);
+        }
 			}
 		},
 		created() {
@@ -101,9 +105,15 @@
 				return scale;
 			},
 			_onBlur(event) {
-				let value = event.detail.value;
+        // 官方的代码没有进行数值转换，用户输入的 value 值可能是非法字符：
+        // let value = event.detail.value;
+        
+        // 将用户输入的内容转化为整数
+        let value = parseInt(event.detail.value);
+        
 				if (!value) {
-					// this.inputValue = 0;
+					// 如果转化之后的结果为 NaN，则给定默认值为 1
+					this.inputValue = 1;
 					return;
 				}
 				value = +value;
@@ -126,15 +136,15 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		height: 35px;
-		line-height: 35px;
-		width: 120px;
+		height: 50rpx;
+		line-height: 50rpx;
+		width: 160rpx;
 	}
 
 	.uni-numbox__value {
 		background-color: #ffffff;
-		width: 40px;
-		height: 35px;
+		width: 60rpx;
+		height: 50rpx;
 		text-align: center;
 		font-size: 32rpx;
 		border-width: 1rpx;
@@ -151,13 +161,13 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		width: 35px;
-		height: 35px;
+		width: 50rpx;
+		height: 50rpx;
 		/* line-height: $box-line-height;
  */
 		/* text-align: center;
  */
-		font-size: 20px;
+		font-size: 40rpx;
 		color: #333;
 		background-color: #f8f8f8;
 		border-width: 1rpx;
@@ -175,8 +185,8 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		width: 35px;
-		height: 35px;
+		width: 50rpx;
+		height: 50rpx;
 		border-width: 1rpx;
 		border-style: solid;
 		border-color: #e5e5e5;

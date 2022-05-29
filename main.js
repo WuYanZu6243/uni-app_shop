@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 
+// 导入vue实例
+import store from './store/index.js'
+
 // 导入网络请求包
 import { $http } from '@escook/request-miniprogram'
 // 配置请求根路径
@@ -37,6 +40,8 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 const app = new Vue({
-	...App
+	...App,
+  // 将 store 挂载到 Vue 实例上
+  store
 })
 app.$mount()
