@@ -21,6 +21,8 @@ export default {
   state : ()=>({
     // 收货地址,从本地缓存获取该数据
     address : JSON.parse(uni.getStorageSync('address') || '{}'),
+    // 登录成功之后的 token 字符串
+    token: '',
   }),
   
   // vue中类似计算属性

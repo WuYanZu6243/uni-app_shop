@@ -9,14 +9,14 @@
       合计:<text class="my-settle-total-money">￥{{checkedGoodsAmount}}</text>
     </view>
     <!-- 结算 -->
-    <view class="my-settle-account">
+    <view class="my-settle-account"  @click="settlement">
       结算({{checkedCount}})
     </view>
 	</view>
 </template>
 
 <script>
-  import {mapGetters,mapMutations} from 'vuex'
+  import {mapState,mapGetters,mapMutations} from 'vuex'
 	export default {
     // 数据
 		data() {
@@ -27,6 +27,7 @@
     // 计算属性
     computed:{
       ...mapGetters('m_cart',['total','checkedCount','checkedGoodsAmount']),
+      ...mapState('m_user',['address','token']),
       // 计算当前是否是全选,判断全选的勾选框应不应该勾上
       isFullCheck(){
         return this.total === this.checkedCount
@@ -39,6 +40,17 @@
       changeAllState(){
         // 调用vuex里的方法,进行全选和取消全选
         this.updateAllGoodsState(!this.isFullCheck)
+      },
+      // 点击了结算按钮
+      settlement() {
+        // 1. 先判断是否勾选了要结算的商品
+        if (!this.checkedCount) return uni.$showMsg('请选择要结算的商品！')
+      
+        // 2. 再判断用户是否选择了收货地址
+        if (!this.address) return uni.$showMsg('请选择收货地址！')
+      
+        // 3. 最后判断用户是否登录了
+        if (!this.token) return uni.$showMsg('请先登录！')
       }
     }
 	}
